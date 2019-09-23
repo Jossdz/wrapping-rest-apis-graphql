@@ -5,6 +5,31 @@ const typeDefs = gql`
   type Query {
     hello: String
   }
+
+  type Origin {
+    name: String
+    url: String
+  }
+
+  type Location {
+    name: String
+    url: String
+  }
+
+  type Character {
+    id: String
+    name: String
+    status: String
+    species: String
+    type: String
+    gender: String
+    origin: Origin
+    location: Location
+    image: String
+    episode: Array
+    url: String
+    created: Date
+  }
 `
 
 // Definimos los resolvers para los campos del schema
