@@ -1,9 +1,9 @@
 const {ApolloServer, gql} = require('apollo-server')
-
+const RickAndMortyAPI = require('./dataSource')
 // Construimos un schema usando el lenguaje de Graphql.
 const typeDefs = gql`
   type Query {
-    hello: String
+    getCharacters: [Character]
   }
 
   type Origin {
@@ -26,23 +26,27 @@ const typeDefs = gql`
     origin: Origin
     location: Location
     image: String
-    episode: Array
+    episode: [String]
     url: String
-    created: Date
+    created: String
   }
 `
 
 // Definimos los resolvers para los campos del schema
 const resolvers = {
   Query: {
-    hello: (root, args, context) => 'Hola FB developer circles CDMX'
+    getCharacters: async (_, __, {dataSources}) =>
+      dataSources.RickAndMortyAPI.getCharacters()
   }
 }
 
 // Creamos una instancia de Apollo Server con los typeDefs y los resolvers
 const server = new ApolloServer({
   typeDefs,
-  resolvers
+  resolvers,
+  dataSources: () => ({
+    RickAndMortyAPI: new RickAndMortyAPI()
+  })
 })
 
 server.listen().then(({url}) => {
